@@ -1,0 +1,139 @@
+# WebScan-Pro 规则配置文件
+
+# 指纹识别权重配置
+fingerprint_weights:
+  faviconhash: 0.45      # Favicon哈希最准确
+  header: 0.20          # HTTP响应头
+  body_keyword: 0.20    # Body关键词
+  title: 0.10           # 页面标题
+  url_path: 0.05        # URL路径
+
+# 特征分级配置
+feature_grades:
+  L1_strong:            # 强特征 - 几乎不会误报
+    methods: [faviconhash]
+    min_confidence: 85
+    
+  L2_medium:            # 中特征 - 需组合验证
+    methods: [header, body_keyword]
+    min_confidence: 50
+    require_multiple: true
+    
+  L3_weak:              # 弱特征 - 极易误报
+    methods: [title, url_path]
+    min_confidence: 20
+    never_report_alone: true
+
+# 置信度阈值
+confidence_thresholds:
+  report: 70            # 报告阈值
+  high_confidence: 85   # 高置信度
+  verify: 50            # 需要验证的阈值
+
+# 敏感信息检测规则
+sensitive_patterns:
+  cloud_keys:
+    - name: "阿里云AccessKey"
+      pattern: "\\bLTAI[a-zA-Z0-9]{20,32}\\b"
+      severity: "Critical"
+    - name: "阿里云SecretKey"
+      pattern: "\\b[a-zA-Z0-9]{30}\\b"
+      severity: "Critical"
+      context: "aliyun|aliyuncs|LTAI"
+    - name: "腾讯云SecretId"
+      pattern: "\\bAKID[a-zA-Z0-9]{32}\\b"
+      severity: "Critical"
+    - name: "腾讯云SecretKey"
+      pattern: "\\b[a-zA-Z0-9]{32}\\b"
+      severity: "Critical"
+      context: "qcloud|tencentcloud"
+    - name: "AWS Access Key"
+      pattern: "\\b(?:AKIA|ASIA)[A-Z0-9]{16}\\b"
+      severity: "Critical"
+    - name: "AWS Secret Key"
+      pattern: "\\b[A-Za-z0-9/+=]{40}\\b"
+      severity: "Critical"
+      context: "aws|secret"
+    - name: "Google API Key"
+      pattern: "\\bAIza[0-9A-Za-z_-]{35}\\b"
+      severity: "Critical"
+    - name: "Azure Storage Key"
+      pattern: "DefaultEndpointsProtocol=https;AccountName=[^;]+;AccountKey=[A-Za-z0-9+/=]{44}"
+      severity: "Critical"
+
+  auth_tokens:
+    - name: "JWT Token"
+      pattern: "eyJ[A-Za-z0-9-_]+\\.[A-Za-z0-9-_]+\\.[A-Za-z0-9-_]+"
+      severity: "High"
+    - name: "Bearer Token"
+      pattern: "Bearer\\s+[a-zA-Z0-9_\\-\\.]+"
+      severity: "High"
+    - name: "API Key"
+      pattern: "(?:api[_-]?key|apikey)\\s*[=:]\\s*[\"']?[a-zA-Z0-9]{16,}"
+      severity: "High"
+    - name: "GitHub Token"
+      pattern: "\\bghp_[a-zA-Z0-9]{36}\\b"
+      severity: "Critical"
+    - name: "Slack Token"
+      pattern: "xox[baprs]-[0-9a-zA-Z]{10,48}"
+      severity: "High"
+
+  private_info:
+    - name: "身份证号"
+      pattern: "\\b\\d{6}(?:19|20)\\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\\d|3[01])\\d{3}[\\dXx]\\b"
+      severity: "Critical"
+    - name: "手机号"
+      pattern: "\\b1[3-9]\\d{9}\\b"
+      severity: "High"
+    - name: "邮箱地址"
+      pattern: "\\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Z|a-z]{2,}\\b"
+      severity: "Medium"
+    - name: "银行卡号"
+      pattern: "\\b(?:4[0-9]{12}(?:[0-9]{3})?|5[1-5][0-9]{14}|6(?:011|5[0-9]{2})[0-9]{12}|3[47][0-9]{13}|3(?:0[0-5]|[68][0-9])[0-9]{11})\\b"
+      severity: "Critical"
+
+  database:
+    - name: "MySQL连接串"
+      pattern: "mysql://[^:]+:[^@]+@[^/]+"
+      severity: "Critical"
+    - name: "Redis连接串"
+      pattern: "redis://:[^@]+@[^:]+:[0-9]+"
+      severity: "Critical"
+    - name: "MongoDB连接串"
+      pattern: "mongodb://[^:]+:[^@]+@[^/]+"
+      severity: "Critical"
+    - name: "PostgreSQL连接串"
+      pattern: "postgresql://[^:]+:[^@]+@[^/]+"
+      severity: "Critical"
+
+  credentials:
+    - name: "硬编码密码"
+      pattern: "(?:password|passwd|pwd)\\s*[=:]\\s*[\"'][^\"']{6,}[\"']"
+      severity: "High"
+    - name: "私钥文件"
+      pattern: "-----BEGIN (RSA |DSA |EC |OPENSSH )?PRIVATE KEY-----"
+      severity: "Critical"
+    - name: "AWS凭证文件"
+      pattern: "aws_access_key_id|aws_secret_access_key"
+      severity: "Critical"
+
+# 高危系统关键词
+high_risk_systems:
+  - admin
+  - login
+  - console
+  - manager
+  - oa
+  - erp
+  - cms
+  - dashboard
+  - system
+  - manage
+  - portal
+  - gateway
+
+# 互斥系统检测
+mutually_exclusive:
+  - [Tomcat, IIS, Nginx, Apache]
+  - [Windows, Linux, Ubuntu, CentOS]
+  - [MySQL, PostgreSQL, Oracle, SQLServer]
