@@ -1995,13 +1995,15 @@ class FLUX:
                 endpoint_findings = []
                 params = {p: "test" for p in endpoint.params}
                 
+                # 导入增强版测试器（在条件分支外导入，确保两个分支都能使用）
+                from vuln_test_enhanced import VulnTesterEnhanced
+                enhanced_tester = VulnTesterEnhanced(self.session, self.timeout)
+                
                 if endpoint.method.upper() == "GET":
                     endpoint_findings.extend(tester.test_sqli(endpoint.url, params, "GET"))
                     endpoint_findings.extend(tester.test_xss(endpoint.url, params, "GET"))
                     endpoint_findings.extend(tester.test_lfi(endpoint.url, params, "GET"))
                     # 使用增强版RCE测试
-                    from vuln_test_enhanced import VulnTesterEnhanced
-                    enhanced_tester = VulnTesterEnhanced(self.session, self.timeout)
                     endpoint_findings.extend(enhanced_tester.test_rce_enhanced(endpoint.url, params, "GET"))
                     # 使用增强版SSRF测试（支持DNSLog）
                     endpoint_findings.extend(enhanced_tester.test_ssrf_with_dnslog(endpoint.url, params, "GET"))
