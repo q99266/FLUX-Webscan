@@ -268,6 +268,7 @@ FLUX/
 - `analyze()`: 执行指纹识别分析
 - 多特征验证机制
 - 置信度评分系统
+<img width="1719" height="1047" alt="image" src="https://github.com/user-attachments/assets/0a2a1676-41db-438f-8c7b-761f8c7d9300" />
 
 ### APIDocParser
 API文档解析器：
