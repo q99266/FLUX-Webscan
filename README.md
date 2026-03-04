@@ -98,6 +98,7 @@ python flux.py https://example.com --full -o report.html
 # 全功能扫描 + DNSLog盲测（推荐用于SSRF检测）
 python flux.py https://example.com --full --dnslog xxx.dnslog.cn -o report.html
 ```
+<img width="2562" height="1323" alt="image" src="https://github.com/user-attachments/assets/2ac8086d-f8cb-4ba0-8cf1-e6edfcf808b1" />
 
 这会自动启用:
 - ✅ 指纹识别 (25,000+ 规则)
