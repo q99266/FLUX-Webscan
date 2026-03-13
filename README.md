@@ -40,6 +40,7 @@ FLUX v3.1.0 是一款专业的Web安全扫描工具，在 v3.0.5 基础上新增
   - 多特征匹配：≥2种不同方法匹配
   - 高置信度单一特征：favicon hash等强特征
   - 通用关键词过滤：避免"login"、"admin"等通用词汇误报
+<img width="2562" height="1323" alt="image" src="https://github.com/MY0723/FLUX-Webscan/blob/main/Assets/1.png" />
 
 ### 🛡️ 漏洞测试（差分检测）
 - **SQL Injection**: SQL注入检测（带基准线差分测试）
