@@ -114,7 +114,7 @@ python flux.py -t https://example.com --full --dnslog xxx.dnslog.cn -o report.ht
 - ✅ WAF检测与绕过
 
 **注意:** 
-- `--full` 不包含危险操作测试（PUT/DELETE/上传），如需进行此类测试需单独开发
+- `--full` 不包含危险操作测试（DELETE），如需进行此类测试需单独开发
 - `--full` 模式下如未指定 `--dnslog`，将自动跳过盲SSRF测试（避免交互式输入卡住）
 
 ## 命令行参数
