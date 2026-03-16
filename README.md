@@ -38,6 +38,7 @@ FLUX v3.2.1 是一款专业的Web安全扫描工具，在 v3.2.0 基础上修复
   - 高置信度单一特征：favicon hash等强特征
   - 通用关键词过滤：避免"login"、"admin"等通用词汇误报
 <img width="2562" height="1323" alt="image" src="https://github.com/MY0723/FLUX-Webscan/blob/main/Assets/1.png" />
+
 ### 🛡️ 漏洞测试（差分检测）
 - **SQL Injection**: SQL注入检测（带基准线差分测试）
 - **XSS**: 跨站脚本检测（反射型、DOM型）
@@ -57,7 +58,9 @@ FLUX v3.2.1 是一款专业的Web安全扫描工具，在 v3.2.0 基础上修复
 - 发送正常请求获取基准响应（状态码、长度、内容hash）
 - 发送Payload后对比差异
 - 显著差异才判定为漏洞，误报率降低80%+
+  
 <img width="2562" height="1323" alt="image" src="https://github.com/MY0723/FLUX-Webscan/blob/main/Assets/2.png" />
+
 ### 🔥 WAF检测与绕过
 - **WAF识别**: 自动识别40+种WAF（国际16种 + 国产24种）
   - 国产支持：阿里云盾、腾讯云WAF、华为云WAF、安全狗、360网站卫士、知道创宇、安恒、长亭等
