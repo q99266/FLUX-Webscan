@@ -1,24 +1,33 @@
 FLUX 是一款专业的Web安全扫描工具，支持JS敏感信息收集、API端点提取、API文档解析、页面爬取、子域名发现、漏洞测试、WAF检测与绕过、JS代码分析等功能。觉得好用点个星星谢谢
 
-# FLUX v3.2.1 使用手册
+FLUX v5.0 是一款专业的Web安全扫描工具，支持静态/渲染/混合三种扫描模式，JS敏感信息收集、API端点提取、API文档解析、页面爬取、子域名发现、漏洞测试、WAF检测与绕过、JS代码分析、浏览器渲染扫描、运行时XHR/fetch请求捕获等功能。
+
+**作者:** ROOT4044
+**版本:** v5.0
+**更新日期:** 2026-03-20
+
+# FLUX v5.0 使用手册
 
 ## 简介
 
-FLUX v3.2.1 是一款专业的Web安全扫描工具，在 v3.2.0 基础上修复了多个关键问题，包括端点URL处理、漏洞测试覆盖、WAF绕过等功能。
+FLUX v5.0 是一款专业的Web安全扫描工具，新增浏览器渲染扫描模式，支持静态/渲染/混合三种扫描策略，集成Playwright实现SPA/前端路由页面扫描，新增轻量交互引擎、新增登录态/Cookie会话贯通功能。
 
 **核心特性:**
-- 🔍 25,000+ 指纹库
+- 🔍 25,156+ 指纹库
 - 🛡️ 40+种WAF检测与绕过（含国产厂商）
-- 🎯 一键全功能扫描 + 单功能独立扫描
-- 📊 美观HTML报告 + 扫描进度实时显示
-- 💾 过程中自动保存结果（防止意外丢失）
+- 🎯 一键全功能扫描
+- 📊 美观HTML报告
+- 📄 实时JSON报告（每10秒自动保存）
+- 🔄 fscan/dddd结果导入
 - 🤖 智能速率限制与流量伪装
 - 🔐 CSRF Token自动提取与Cookie持久化
-- 📥 扫描结果导入（支持 fscan/dddd + Web存活验证）
-
-
-
-**作者:** ROOT4044
+- 💾 断点续扫增强（保存完整状态）
+- 🛡️ 减少误报（隐藏文件/敏感路径过滤优化）
+- 🌐 **静态/渲染/混合三种扫描模式**
+- 🖥️ **浏览器渲染扫描（SPA/前端路由支持）**
+- 📡 **运行时XHR/fetch请求捕获**
+- 🤝 **登录态/Cookie会话贯通**
+- 🖱️ **轻量交互引擎（可控点击）**
 
 ## 功能特性
 
@@ -37,7 +46,6 @@ FLUX v3.2.1 是一款专业的Web安全扫描工具，在 v3.2.0 基础上修复
   - 多特征匹配：≥2种不同方法匹配
   - 高置信度单一特征：favicon hash等强特征
   - 通用关键词过滤：避免"login"、"admin"等通用词汇误报
-<img width="2562" height="1323" alt="image" src="https://github.com/MY0723/FLUX-Webscan/blob/main/Assets/1.png" />
 
 ### 🛡️ 漏洞测试（差分检测）
 - **SQL Injection**: SQL注入检测（带基准线差分测试）
@@ -53,13 +61,69 @@ FLUX v3.2.1 是一款专业的Web安全扫描工具，在 v3.2.0 基础上修复
   - **存储桶接管**: 检测可接管的废弃存储桶
   - **ACL/Policy泄露**: 测试访问控制列表和策略配置泄露
   - **未授权操作**: 测试未授权上传、删除文件
-![alt text](image.png)
+
 **差分测试机制:**
 - 发送正常请求获取基准响应（状态码、长度、内容hash）
 - 发送Payload后对比差异
 - 显著差异才判定为漏洞，误报率降低80%+
-  
-<img width="2562" height="1323" alt="image" src="https://github.com/MY0723/FLUX-Webscan/blob/main/Assets/2.png" />
+
+### 🤖 AI基础设施安全检测 (v4.2+)
+- **AI推理服务 (5个)**: Ollama、vLLM、Xinference、Triton Inference Server、TGI
+- **AI工作流平台 (5个)**: n8n、Dify、Flowise、LangFlow、ComfyUI
+- **AI聊天界面 (4个)**: OpenWebUI、ChatGPT-Next-Web、LobeChat、Gradio
+- **AI开发工具 (7个)**: Jupyter Notebook、JupyterLab、Jupyter Server、MLflow、Kubeflow、Ray、TensorBoard
+- **AI数据平台 (3个)**: Feast、ClickHouse、Dask
+- **国产AI平台 (6个)**: FastGPT、MaxKB、RAGFlow、QAnything、ChuanhuGPT、OneAPI
+- **AI开发框架 (5个)**: LangChain、LangServe、LangFuse、LiteLLM、FastChat
+- **其他AI工具 (6个)**: Stable Diffusion WebUI、LLaMA-Factory、AnythingLLM、Marimo、KubePi、MCP
+- **CVE漏洞检测**: 589+ AI组件CVE (基于AI-Infra-Guard v3.6.2)
+- **提示词注入检测**: 系统提示泄露、角色扮演绕过、分隔符绕过等
+- **模型窃取检测**: 未授权模型列表获取
+- **版本检测**: 自动提取组件版本并匹配CVE
+
+### ☸️ Kubernetes安全检测 (v4.0+)
+- **K8s组件检测**: API Server、Dashboard、etcd、kubelet、kube-proxy
+- **未授权访问检测**: 各组件未授权访问测试
+- **CVE漏洞扫描**: CVE-2018-1002102、CVE-2019-11247、CVE-2020-8554等
+- **配置泄露检测**: 配置文件、密钥泄露
+
+### 🐳 容器安全检测 (v4.0+)
+- **容器逃逸风险**: 特权容器、危险挂载检测
+- **Docker API**: 未授权访问检测
+- **Containerd/CRI-O**: 运行时安全检测
+- **容器CVE库**: CVE-2019-5736、CVE-2020-15257、CVE-2021-30465、CVE-2022-0847等
+
+### 🔄 CI/CD配置安全检测 (v4.3+)
+- **CI/CD配置文件泄露**: 
+  - GitLab CI (.gitlab-ci.yml)
+  - Jenkins (Jenkinsfile, credentials.xml)
+  - GitHub Actions (.github/workflows/)
+  - Travis CI, CircleCI, Drone CI, Azure Pipelines
+  - Docker (Dockerfile, docker-compose.yml)
+  - Kubernetes (deployment.yaml, secret.yaml)
+  - Ansible, Terraform配置
+- **敏感信息检测** (17种Token类型):
+  - GitLab Token / Runner Token
+  - Jenkins API Token
+  - Travis CI / CircleCI Token
+  - Docker Hub Token / Registry Auth
+  - npm / PyPI / RubyGems Token
+  - Slack / Discord Webhook
+- **环境变量泄露检测**:
+  - AWS Access Key / Secret Key
+  - Database URL with password
+  - Private Key in ENV
+  - 密码/密钥在环境变量中
+
+### ✅ 漏洞利用验证 (v4.1+)
+- **自动验证**: 高危/严重漏洞自动验证
+- **SQL注入验证**: 时间盲注、错误回显验证
+- **RCE验证**: 延迟执行、输出回显验证
+- **LFI验证**: 文件读取验证
+- **SSRF验证**: 内部服务访问验证
+- **云元数据验证**: 云实例元数据访问验证
+- **AI/K8s/Docker验证**: 未授权访问验证
+- **利用证明**: 生成PoC和影响评估
 
 ### 🔥 WAF检测与绕过
 - **WAF识别**: 自动识别40+种WAF（国际16种 + 国产24种）
@@ -88,11 +152,25 @@ FLUX v3.2.1 是一款专业的Web安全扫描工具，在 v3.2.0 基础上修复
 - **HTML报告**: 美观的可视化报告，含统计图表
 - **JSON输出**: 结构化数据便于集成
 - **请求/响应包**: 详细的HTTP请求和响应信息
+- **漏洞验证状态**: 标识已验证/未验证漏洞
+
+### 🖥️ 浏览器渲染扫描 (v5.0+)
+- **三种扫描模式**: static（静态）、render（渲染）、hybrid（混合）
+- **Playwright集成**: 使用真实浏览器渲染SPA/前端路由页面
+- **运行时请求捕获**: 捕获XHR/fetch请求，识别真实API接口
+- **登录态支持**: 加载Cookie到浏览器上下文，支持登录后扫描
+- **会话贯通**: 浏览器Cookie可同步回requests会话
+
+### 🖱️ 轻量交互引擎 (v5.0+)
+- **可控点击**: 预算控制下的高价值元素点击
+- **智能识别**: 自动识别导航菜单、Tab切换、折叠面板等
+- **风险评分**: 避开危险按钮（删除/支付/注销等）
+- **交互发现**: 点击后提取新链接和运行时请求
 
 ## 安装依赖
 
 ```bash
-pip install -r requirements.txt
+pip install requests beautifulsoup4 colorlog pyyaml
 ```
 
 ## 快速开始
@@ -100,156 +178,108 @@ pip install -r requirements.txt
 ### 一键全功能扫描（推荐）
 ```bash
 # 基础全功能扫描（自动跳过DNSLog盲测）
-python flux.py -t https://example.com --full -o report.html
+python flux.py https://example.com --full -d 3 -t 20 -o report.html
 
 # 全功能扫描 + DNSLog盲测（推荐用于SSRF检测）
-python flux.py -t https://example.com --full --dnslog xxx.dnslog.cn -o report.html
+python flux.py https://example.com --full --dnslog xxx.dnslog.cn -o report.html
 ```
-<img width="2562" height="1323" alt="image" src="https://github.com/user-attachments/assets/2ac8086d-f8cb-4ba0-8cf1-e6edfcf808b1" />
 
 这会自动启用:
-- ✅ 指纹识别 (25,000+ 规则)
-- ✅ API文档解析 (Swagger/OpenAPI)
-- ✅ 密钥有效性验证
+- ✅ 指纹识别 (25,136+ 规则，含46个AI组件)
+- ✅ API文档解析 (Swagger/OpenAPI/Postman)
+- ✅ 密钥有效性验证 (12种云服务商)
 - ✅ 敏感路径Fuzzing
-- ✅ 参数Fuzzing
-- ✅ 漏洞主动测试 (SQLi/XSS/LFI/RCE/SSTI/SSRF)
-- ✅ WAF检测与绕过
+- ✅ 参数Fuzzing (从JS提取API参数)
+- ✅ 漏洞主动测试 (SQLi/XSS/LFI/RCE/SSTI/SSRF/XXE，带差分检测)
+- ✅ AI基础设施安全检测 (46+组件, 589+CVE)
+- ✅ Kubernetes安全检测 (K8s组件, CVE扫描)
+- ✅ 容器安全检测 (Docker/K8s逃逸风险)
+- ✅ CI/CD配置安全检测 (配置文件/敏感Token/环境变量)
+- ✅ 云安全测试 (Bucket遍历/密钥泄露)
+- ✅ WAF检测与绕过 (40+种WAF含国产厂商)
+- ✅ 智能速率限制 (自适应请求频率)
+- ✅ 流量指纹伪装 (Header轮换)
 
 **注意:** 
-- `--full` 不包含危险操作测试（DELETE），如需进行此类测试需单独开发
+- `--full` 不包含DELETE测试，如需测试DELETE接口请额外添加 `--test-delete` 参数
 - `--full` 模式下如未指定 `--dnslog`，将自动跳过盲SSRF测试（避免交互式输入卡住）
+- `--full` 已包含AI/K8s/容器安全检测，无需额外参数
 
 ## 命令行参数
 
-### 基础参数
-
 | 参数 | 说明 | 默认值 |
 |-----|------|-------|
-| `-t`, `--target` | 单个目标URL | - |
-| `-tf`, `--target-file` | 从文件加载目标列表(每行一个URL) | - |
+| `target` | 目标URL、URL列表(逗号分隔)、或URL文件路径 | 必填 |
+| `-l`, `--list` | 从文件加载目标列表(每行一个URL) | - |
 | `-d`, `--depth` | 爬取深度 | 3 |
+| `-t`, `--threads` | 并发线程数 | 20 |
 | `--timeout` | 超时时间(秒) | 15 |
 | `--proxy` | 代理服务器 | - |
 | `-o`, `--output` | 输出文件(.html/.json) | - |
+| `--full` | **一键全功能扫描** (启用所有检测) | 关闭 |
+| `--api-parse` | 启用API文档解析 | 关闭 |
+| `--verify-keys` | 验证密钥有效性 | 关闭 |
+| `--fuzz` | 启用参数fuzzing | 关闭 |
+| `--fuzz-paths` | 启用敏感路径fuzzing | 关闭 |
+| `--vuln-test` | 启用漏洞主动测试 | 关闭 |
+| `--test-delete` | 测试DELETE类危险接口 | 关闭 |
+| `--dnslog` | 指定DNSLog域名用于盲SSRF测试 | - |
 | `-v`, `--verbose` | 详细输出 | 关闭 |
 | `-q`, `--quiet` | 安静模式 | 关闭 |
-
-### 扫描模式参数（互斥）
-
-| 参数 | 说明 |
-|-----|------|
-| `--full` | **一键全功能扫描** (启用所有检测) |
-| `--fingerprint` | **仅进行指纹识别** |
-
-### 功能开关参数
-
-| 参数 | 说明 | 默认值 |
-|-----|------|-------|
-| `--api-parse` | 启用API文档解析 | - |
-| `--fuzz-paths` | 启用敏感路径fuzzing | - |
-| `--vuln-test` | 启用漏洞主动测试 | - |
-| `--test-api-endpoints` | 对所有发现的API端点进行漏洞测试 | - |
-| `--dnslog` | 指定DNSLog域名用于盲SSRF测试 | - |
-| `--save-interval` | 自动保存间隔(秒)，0为禁用 | 30 |
-| `--from-fscan` | 从 fscan 扫描结果导入目标 | - |
-| `--from-dddd` | 从 dddd 扫描结果导入目标 | - |
-| `--from-scan` | 从扫描结果导入目标(自动识别格式) | - |
-| `--no-verify-web` | 跳过Web服务存活验证 | - |
-| `--verify-threads` | Web存活验证并发线程数 | 10 |
-
-> 💡 **提示**: 默认情况下，漏洞测试只针对**HTML页面**和**表单**。如需测试所有发现的API端点（包括页面爬取和JS提取的），请添加 `--test-api-endpoints` 参数。`--full` 模式下会自动启用此功能
-
-> ⚠️ **注意**: `--full` 和 `--fingerprint` 为互斥参数，只能同时使用其中一个
+| `--scan-mode` | 扫描模式: static/render/hybrid | static |
+| `--render-timeout` | 渲染超时时间(秒) | 30 |
+| `--render-max-pages` | 渲染最大页面数 | 20 |
+| `--render-enable-interaction` | 启用轻量交互引擎 | 关闭 |
+| `--render-max-clicks` | 交互引擎最大点击数 | 10 |
+| `--render-load-cookies-to-browser` | 加载Cookie到浏览器 | 关闭 |
+| `--render-sync-cookies-back` | 同步Cookie回requests会话 | 关闭 |
+| `--render-allow-cross-origin` | 允许观察跨域请求 | 关闭 |
 
 ## 使用示例
 
-### 🔥 快速开始
-
-```bash
-# 一键全功能扫描（推荐）
-python flux.py -t https://example.com --full -o report.html
-
-# 全功能扫描 + DNSLog盲测（推荐用于SSRF检测）
-python flux.py -t https://example.com --full --dnslog xxx.dnslog.cn -o report.html
-
-# 完整扫描（深度3，30秒自动保存）
-python flux.py -t https://example.com --full --dnslog xxx.dnslog.cn -d 3 -o report.html --save-interval 30
-```
-
 ### 单目标扫描
 ```bash
-python flux.py -t https://example.com
+python flux.py https://example.com
 ```
 
 ### 批量扫描(逗号分隔)
 ```bash
-python flux.py -t "https://example1.com,https://example2.com"
+python flux.py "https://example1.com,https://example2.com"
 ```
 
 ### 批量扫描(文件)
 ```bash
-python flux.py -tf urls.txt
+python flux.py urls.txt
 ```
 
 ### 深度扫描
 ```bash
-python flux.py -t https://example.com -d 5
-```
-
-### 单功能扫描模式
-
-```bash
-# 仅指纹识别
-python flux.py -t https://example.com --fingerprint
-
-# 仅API文档解析
-python flux.py -t https://example.com --api-parse
-
-# 仅漏洞测试
-python flux.py -t https://example.com --vuln-test --dnslog xxx.dnslog.cn
-
-# 仅敏感路径扫描
-python flux.py -t https://example.com --fuzz-paths
-```
-
-### 过程中自动保存结果
-
-```bash
-# 每30秒自动保存（默认）
-python flux.py -t https://example.com --full --save-interval 30
-
-# 禁用自动保存
-python flux.py -t https://example.com --full --save-interval 0
+python flux.py https://example.com -d 5
 ```
 
 ### 漏洞主动测试 (SQLi/XSS/LFI/RCE/SSTI/云安全)
 ```bash
-python flux.py -t https://example.com --vuln-test
+python flux.py https://example.com --vuln-test
 ```
 
 ### 云安全测试
 ```bash
 # 基础云安全测试（包含在--vuln-test中）
-python flux.py -t https://example.com --vuln-test -o report.html
+python flux.py https://example.com --vuln-test -o report.html
 
 # 一键全功能扫描（包含云安全测试）
-python flux.py -t https://example.com --full -o report.html
+python flux.py https://example.com --full -o report.html
 ```
 
 **云安全测试内容:**
 - **云Access Key泄露检测**: 检测阿里云、腾讯云、华为云、AWS等云服务商的Access Key/Secret Key
 - **存储桶URL泄露**: 识别JS代码、页面内容中的存储桶域名
-- **存储桶遍历漏洞**: 测试存储桶是否允许未授权列出文件（只测试疑似存储桶URL）
+- **存储桶遍历漏洞**: 测试存储桶是否允许未授权列出文件
 - **存储桶接管漏洞**: 检测已删除/未注册的存储桶是否可被接管
 - **存储桶ACL泄露**: 测试是否可未授权获取存储桶访问控制列表
 - **存储桶Policy泄露**: 测试是否可未授权获取存储桶策略配置
 - **存储桶CORS配置泄露**: 测试是否可未授权获取CORS配置
-- **未授权上传/删除**: 测试存储桶是否允许未授权上传或删除文件（危险操作，需显式开启）
-
-**优化说明:**
-- 云安全测试已优化，只对疑似存储桶URL进行测试（包含oss/cos/s3等特征），避免对普通页面发起大量请求导致卡顿
-- 测试超时时间缩短至5秒，提升扫描速度
+- **未授权上传/删除**: 测试存储桶是否允许未授权上传或删除文件
 
 **支持的云服务商:**
 | 云服务商 | 存储桶服务 | Access Key检测 | 存储桶遍历 | 接管检测 |
@@ -267,73 +297,56 @@ python flux.py -t https://example.com --full -o report.html
 
 ### 敏感路径fuzzing
 ```bash
-python flux.py -t https://example.com --fuzz-paths
+python flux.py https://example.com --fuzz-paths
 ```
 
 ### 生成HTML报告
 ```bash
-python flux.py -t https://example.com -o report.html
+python flux.py https://example.com -o report.html
 ```
 
 ### 标准扫描 (推荐)
 ```bash
-python flux.py -t https://example.com --vuln-test -o report.html
+python flux.py https://example.com --vuln-test -o report.html
 ```
 
-### 全面扫描 (深度)
+### 全面扫描 (深度)除delete测试除外，如需要单独加参数--test-delete
 ```bash
-python flux.py -t https://example.com --full --dnslog xxx.dnslog.cn -o report.html
+python flux.py https://example.com --full --dnslog xxx.dnslog.cn -o report.html
 ```
 
 ### 使用代理扫描
 ```bash
-python flux.py -t https://example.com --vuln-test --proxy http://127.0.0.1:8080 -o report.html
+python flux.py https://example.com --vuln-test --proxy http://127.0.0.1:8080 -o report.html
+```
+
+### 渲染扫描（SPA/前端路由站点）
+```bash
+# 渲染模式 - 使用浏览器渲染扫描
+python flux.py https://example.com --scan-mode render -o report.html
+
+# 混合模式 - 静态+渲染（自动判断是否需要渲染）
+python flux.py https://example.com --scan-mode hybrid -o report.html
+
+# 渲染+交互 - 启用轻量交互引擎点击高价值元素
+python flux.py https://example.com --scan-mode hybrid --render-enable-interaction --render-max-clicks 15 -o report.html
+
+# 渲染+Cookie - 加载登录态进行扫描
+python flux.py https://example.com --scan-mode hybrid --render-load-cookies-to-browser --cookie-file cookies.json -o report.html
 ```
 
 ### SSRF测试（带DNSLog）
 ```bash
 # 方式1: 命令行指定DNSLog域名（推荐，非交互式）
-python flux.py -t https://example.com --vuln-test --dnslog xxx.dnslog.cn -o report.html
+python flux.py https://example.com --vuln-test --dnslog xxx.dnslog.cn -o report.html
 
 # 方式2: 交互式输入（扫描过程中提示输入）
-python flux.py -t https://example.com --vuln-test
+python flux.py https://example.com --vuln-test
 # 提示: 请输入DNSLog子域名 (例如: xxx.dnslog.cn):
 
 # 方式3: 一键全功能扫描 + DNSLog
-python flux.py -t https://example.com --full --dnslog xxx.dnslog.cn -o report.html
+python flux.py https://example.com --full --dnslog xxx.dnslog.cn -o report.html
 ```
-
-### 扫描结果导入 (fscan/dddd)
-
-支持从 fscan、dddd 等常见内网扫描工具的结果中导入目标，自动进行 Web 存活验证后开始扫描。
-
-```bash
-# 从 fscan 结果导入 (自动验证Web服务)
-python flux.py --from-fscan fscan_result.txt --full -o report.html
-
-# 从 dddd 结果导入
-python flux.py --from-dddd dddd_result.txt --full -o report.html
-
-# 自动识别扫描工具格式
-python flux.py --from-scan scan_result.txt --full -o report.html
-
-# 跳过Web存活验证，直接扫描所有目标
-python flux.py --from-fscan fscan_result.txt --no-verify-web --full -o report.html
-
-# 调整Web验证并发线程数 (默认10)
-python flux.py --from-fscan fscan_result.txt --verify-threads 20 --full -o report.html
-```
-
-**支持格式:**
-
-- **fscan**: `192.168.1.1:80 open` 格式
-- **dddd**: `[+] http://192.168.1.1:80` 格式
-
-**工作流程:**
-1. 解析扫描结果文件，提取 IP:Port
-2. 并发验证每个目标的 Web 服务存活状态
-3. 只对有 Web 服务响应的目标进行扫描
-4. 自动识别 HTTP/HTTPS 协议
 
 **获取DNSLog域名:**
 1. 访问 https://dnslog.cn
@@ -341,73 +354,33 @@ python flux.py --from-fscan fscan_result.txt --verify-threads 20 --full -o repor
 3. 使用 `--dnslog abc123.dnslog.cn` 参数运行扫描
 4. 扫描完成后回到 https://dnslog.cn 查看DNS解析记录
 
----
-
-## 扫描进度显示
-
-扫描过程中会实时显示进度信息：
-
-```
-[2026-03-13 14:23:01,822] [INFO] [进度] 目标:1/5 | 页面:15 | JS:27 | 发现:394 | 漏洞:23 | 耗时:800s
-```
-
-**进度字段说明：**
-- `目标:1/5` - 当前扫描第1个目标，共5个目标
-- `页面:15` - 已爬取15个页面
-- `JS:27` - 已分析27个JS文件
-- `发现:394` - 发现394个API端点/敏感信息
-- `漏洞:23` - 发现23个漏洞
-- `耗时:800s` - 已运行800秒
-
----
-
-## 临时文件说明
-
-扫描过程中会自动保存中间结果到 `flux_interim_latest.json`，防止程序异常退出导致结果丢失。
-
-**特点：**
-- 使用固定文件名，不会生成大量文件
-- 扫描完成后自动清理
-- 可通过 `--save-interval 0` 禁用
-
----
-
 ## 架构说明
 
 ```
 FLUX/
 ├── flux.py                 # 主程序入口
-├── fingerprint_engine.py   # 指纹识别引擎
-├── api_parser.py          # API文档解析器
-├── vuln_test.py           # 漏洞测试模块
-├── report_generator.py    # 报告生成器
+├── core/
+│   ├── __init__.py
+│   ├── models.py           # 数据模型
+│   ├── url_utils.py        # URL工具
+│   ├── page_classifier.py  # 页面分类器
+│   ├── path_verifier.py    # 路径验证器
+│   ├── js_extractor.py     # JS提取器
+│   ├── render_scan.py      # 浏览器渲染扫描
+│   └── pipeline.py         # 扫描流水线
+├── modules/
+│   ├── ai/                 # AI安全检测
+│   ├── cloud/              # 云安全检测
+│   ├── cicd/               # CI/CD安全检测
+│   ├── container/          # 容器安全检测
+│   ├── kubernetes/         # K8s安全检测
+│   └── vulnerability/     # 漏洞测试
+├── utils/
+│   └── report.py           # 报告生成
 ├── data/
-│   └── fingerprints_merged.json  # 合并指纹库
-├── README.md              # 使用手册
+│   └── fingerprints_merged.json  # 指纹库
+└── README.md              # 使用手册
 ```
-
-## 核心类说明
-
-### FLUX
-主扫描器类，包含所有扫描功能：
-- `crawl_and_scan()`: 批量扫描入口
-- `extract_endpoints()`: API端点提取
-- `scan_sensitive_info()`: 敏感信息检测
-- `test_sqli/test_xss/test_lfi/test_rce()`: 漏洞测试
-- `detect_waf()`: WAF检测
-- `fingerprint_target()`: 指纹识别
-
-### FingerprintEngine
-指纹识别引擎：
-- `analyze()`: 执行指纹识别分析
-- 多特征验证机制
-- 置信度评分系统
-<img width="1719" height="1047" alt="image" src="https://github.com/user-attachments/assets/0a2a1676-41db-438f-8c7b-761f8c7d9300" />
-
-### APIDocParser
-API文档解析器：
-- `discover_and_parse()`: 发现并解析API文档
-- 支持Swagger/OpenAPI/Postman
 
 ## 技术亮点
 
@@ -437,50 +410,62 @@ API文档解析器：
 
 ## 更新日志
 
-### v3.2.1 (2026-03-14)
-- 🔧 **修复端点URL相对路径问题**：漏洞测试前强制拼接目标域名，确保能测试到真实接口
-- 🔧 **修复`--full`模式覆盖不全**：添加CSRF、水平越权、SSRF测试到主流程
-- 🔧 **修复WAF绕过/限速/Header轮换未使用**：迁移到EnhancedVulnTester路径
-- 🔧 **修复多目标扫描上下文串扰**：每目标重置forms/endpoints/crawled_pages等集合
-- 🔧 **修复API解析依赖首页HTML**：`--api-parse`开启时直接执行，不依赖首页成功
-- 🔧 **修复过程保存缺口**：强制保存与定时保存分离，`save_interval=0`不影响异常保存
-- 🔧 **修复`--verify-endpoints`未覆盖JS端点**：JS端点添加时同步验证
-- 🔧 **清理文档和CLI示例**：移除旧的位置参数写法，修复`-t`参数冲突示例
-- 🔧 **标记未调用代码**：添加TODO/DEPRECATED注释，避免后续误导
-- 🔧 **开启云安全测试危险操作**：PUT/DELETE/上传测试默认启用（针对存储桶URL）
+### v5.0 (2026-03-20) - 渲染扫描与交互增强
+- ✨ **新增浏览器渲染扫描模式**: 支持 static/render/hybrid 三种扫描模式
+- ✨ **Playwright集成**: 使用真实浏览器渲染SPA/前端路由页面
+- ✨ **运行时请求捕获**: 捕获XHR/fetch请求，识别真实API接口
+- ✨ **轻量交互引擎**: 预算控制下的高价值元素点击，发现更多页面
+- ✨ **Cookie/登录态贯通**: 支持加载Cookie到浏览器、同步回requests会话
+- ✨ **同源过滤可控**: `--render-same-origin-only` 参数真正生效
+- ✨ **网络捕获可控**: `--render-network-capture` 参数真正生效
+- 🔧 优化渲染扫描配置链路贯通
 
-### v3.2.0 (2026-03-13)
-- ✨ **新增扫描结果导入**：支持 fscan/dddd 扫描结果导入，自动进行 Web 存活验证
-- ✨ **新增参数Fuzzing功能**：`--full` 模式下自动启用，基于差分测试从JS提取API参数
-- ✨ **优化云安全测试**：只对疑似存储桶URL进行测试，避免卡顿
-- ✨ **优化漏洞测试范围**：默认只测试HTML页面和表单，新增 `--test-api-endpoints` 参数
-- 🔧 修复指纹识别Header匹配逻辑、faviconhash冲突、代理模式错误
-- 🔧 修复标题提取逻辑（支持非200状态码）
-- 🔧 优化HTTP请求头，降低503错误率
+### v4.3.0 (2026-03-04) - CI/CD配置安全检测
+- ✨ **新增CI/CD配置安全检测模块**: 独立模块检测CI/CD配置文件泄露和敏感信息
+- ✨ **支持11种CI/CD配置文件检测**: GitLab CI、Jenkins、GitHub Actions、Travis CI、CircleCI、Drone CI、Azure Pipelines、Docker、Kubernetes、Ansible、Terraform
+- ✨ **新增17种敏感Token检测**: GitLab Token、Jenkins API Token、Docker Hub Token、npm Token、Slack/Discord Webhook等
+- ✨ **新增5种环境变量泄露检测**: AWS Key、Database URL、Private Key、Password等
+- 🔧 **优化美图云存储桶检测**: 完善ACL/Policy端点配置，支持美图云详细安全测试
 
-### v3.1.0 (2026-03-13)
-- ✨ **新增扫描进度实时显示**：目标/页面/JS/发现/漏洞/耗时统计
-- ✨ **新增过程中自动保存结果**：`--save-interval` 参数，防止程序异常丢失扫描进展
-- ✨ **优化参数体系**：`-t` 指定单目标，`-tf` 指定目标文件
-- ✨ **新增单功能扫描模式**：`--fingerprint` 仅指纹识别，`--api-parse` 仅API解析
-- ✨ **优化临时文件管理**：使用固定文件名，避免生成大量JSON文件
-- ✨ **危险操作默认关闭**：PUT/DELETE/上传类测试默认关闭，提升安全性
+### v4.2.0 (2026-03-04) - AI-Infra-Guard集成增强
+- ✨ **集成AI-Infra-Guard指纹库**：参考腾讯AI-Infra-Guard v3.6.2，新增40+AI组件检测
+- ✨ **大幅扩展CVE库**：新增100+AI组件CVE漏洞，覆盖Gradio、Dify、ComfyUI、vLLM、Xinference、Triton、Ray、LiteLLM、ChuanhuGPT等
+- ✨ **新增AI组件**：
+  - 推理服务：Xinference、Triton Inference Server
+  - 工作流：LangFlow
+  - 聊天界面：Gradio
+  - 开发工具：JupyterLab、Jupyter Server、TensorBoard
+  - 数据平台：Feast、ClickHouse、Dask
+  - 国产平台：ChuanhuGPT
+  - 其他：LangFuse、LiteLLM、LLaMA-Factory、Marimo、KubePi、MCP
+- ✨ **增强版本检测**：支持从API响应中提取组件版本号
+- ✨ **智能CVE匹配**：根据检测到的版本自动匹配CVE漏洞
 
-### v3.0.5 (2026-03-06)
-- ✨ 新增 `--verify-endpoints` 参数，验证提取的 API 端点是否真实存在（减少误报）
-- ✨ 新增 SQL 注入误报过滤机制，自动识别测试代码/文档中的 SQL 错误
-- ✨ 新增 XSS 误报过滤机制，过滤注释/字符串/示例代码中的 payload
-- ✨ 增强 Swagger/OpenAPI 文档解析，支持更多格式自动发现
-- ✨ 改进漏洞验证逻辑，降低误报率
+### v4.1.0 (2026-03-04) - AI工作流平台+漏洞验证
+- ✨ **新增AI工作流平台检测**：支持n8n、Dify、Flowise、LangChain、ChatGPT-Next-Web、LobeChat、OneAPI、FastGPT、MaxKB、RAGFlow、AnythingLLM、QAnything等12+工作流平台
+- ✨ **新增漏洞利用验证模块**：支持SQL注入、RCE、LFI、SSRF、云元数据、AI/K8s/Docker未授权等漏洞的验证性利用
+- ✨ **完善CVE漏洞库**：新增CVE-2024-2221 (n8n)、CVE-2024-2219 (Dify)、CVE-2024-2222 (Flowise)、CVE-2023-39968 (Jupyter)、CVE-2024-2223 (OneAPI)、CVE-2024-2224 (FastGPT)
+- ✨ **智能漏洞验证**：自动对高危/严重漏洞进行验证，生成利用证明和影响评估
 
-### v3.0.4 (2026-03-06)
-- ✨ 新增 SwaggerHound 模块集成，自动测试 Swagger/OpenAPI 接口
-- ✨ 自动发现 API 文档（Swagger/OpenAPI/Swagger-UI/swagger-resources）
-- ✨ 根据参数类型自动填充测试数据（string/integer/boolean/array/object）
-- ✨ 支持自定义模型解析（$ref 引用）
-- ✨ 自动发送 GET/POST 请求测试接口可访问性
-- ✨ 测试结果自动添加到扫描报告
-  
+### v4.0.0 (2026-03-04) - 重大更新
+- ✨ **新增AI基础设施安全检测**：支持Ollama、vLLM、ComfyUI、OpenWebUI、LangServe、FastChat、TGI、Stable Diffusion WebUI、Jupyter Notebook、MLflow等10+AI组件
+- ✨ **新增Kubernetes安全检测**：支持API Server、Dashboard、etcd、kubelet、kube-proxy等组件的未授权访问和CVE漏洞检测
+- ✨ **新增容器安全检测**：支持Docker、Containerd、CRI-O运行时的容器逃逸、特权容器、危险挂载检测
+- ✨ **新增CVE漏洞库**：包含CVE-2019-5736、CVE-2020-15257、CVE-2021-30465、CVE-2022-0847、CVE-2022-0492等容器相关CVE
+- ✨ **新增AI CVE漏洞库**：包含CVE-2024-37032 (Ollama)、CVE-2024-21514 (ComfyUI)等AI组件CVE
+- ✨ **新增提示词注入检测**：支持系统提示泄露、角色扮演绕过、分隔符绕过等攻击向量
+- ✨ **新增K8s CVE漏洞库**：包含CVE-2018-1002102、CVE-2019-11247、CVE-2020-8554等K8s CVE
+
+### v4.2 (2026-03-05)
+- ✨ 新增AI基础设施安全检测 (46+组件, 589+CVE)
+- ✨ 新增Kubernetes安全检测 (K8s组件, CVE扫描)
+- ✨ 新增容器安全检测 (Docker/K8s逃逸风险)
+- ✨ 新增CI/CD配置安全检测 (17种Token类型)
+- ✨ 新增云存储桶安全检测 (12种云服务商)
+- ✨ 新增漏洞利用验证 (高危漏洞自动验证)
+- 🔧 优化指纹库规模 (25,154条规则)
+- 🔧 优化WAF检测 (40+种WAF含国产厂商)
+
 ### v3.0.3 (2026-03-04)
 - 🔧 修复`enhanced_tester`变量作用域问题（非GET请求方法报错）
 - 🔧 优化增强版测试器初始化逻辑（移到条件分支外）
@@ -518,7 +503,7 @@ API文档解析器：
 
 ### Q: 扫描卡住不动？
 **A:** 已修复。如果仍遇到问题，请尝试：
-- 减少线程数：`--threads 10`
+- 减少线程数：`-t 10`
 - 减少爬取深度：`-d 2`
 - 检查目标网站是否可访问
 
@@ -572,4 +557,3 @@ MIT License
 - Packer-Fuzzer
 - EHole
 - Veo
-
