@@ -81,7 +81,7 @@ FLUX v5.2.1 / v1.2.1 优化版是一款专业的Web安全扫描工具，新增JS
   - **ACL/Policy泄露**: 测试访问控制列表和策略配置泄露
   - **未授权操作**: 测试未授权上传、删除文件
 
-<img width="1667" height="612" alt="image" src="https://github.com/user-attachments/assets/3cac14d8-0db8-4b36-92dc-f4d02d16bf10" />
+<img width="1176" height="429" alt="image" src="https://github.com/user-attachments/assets/bf261ac6-133c-448f-884f-092017e85073" />
 
 **差分测试机制:**
 - 发送正常请求获取基准响应（状态码、长度、内容hash）
