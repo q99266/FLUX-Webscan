@@ -55,6 +55,8 @@ FLUX v5.2.1 / v1.2.1 优化版是一款专业的Web安全扫描工具，新增JS
 - **页面爬取**: 深度爬取网站页面，提取表单和链接
 - **子域名发现**: 自动收集子域名
 
+<img width="1710" height="855" alt="image" src="https://github.com/user-attachments/assets/c9374171-302f-477a-ab05-5f2734784a14" />
+
 ### 🎯 指纹识别（增强版）
 - **指纹库规模**: 25,000+条指纹规则
 - **支持类别**: OA系统、开发框架、Web服务器、安全设备、数据库、CMS等
@@ -78,6 +80,8 @@ FLUX v5.2.1 / v1.2.1 优化版是一款专业的Web安全扫描工具，新增JS
   - **存储桶接管**: 检测可接管的废弃存储桶
   - **ACL/Policy泄露**: 测试访问控制列表和策略配置泄露
   - **未授权操作**: 测试未授权上传、删除文件
+
+<img width="1667" height="612" alt="image" src="https://github.com/user-attachments/assets/3cac14d8-0db8-4b36-92dc-f4d02d16bf10" />
 
 **差分测试机制:**
 - 发送正常请求获取基准响应（状态码、长度、内容hash）
@@ -170,6 +174,10 @@ FLUX v5.2.1 / v1.2.1 优化版是一款专业的Web安全扫描工具，新增JS
 - **JSON输出**: 结构化数据便于集成
 - **请求/响应包**: 详细的HTTP请求和响应信息
 - **漏洞验证状态**: 标识已验证/未验证漏洞
+
+<img width="1424" height="516" alt="image" src="https://github.com/user-attachments/assets/40f98f96-20cc-47cc-9a34-2737c594a123" />
+
+<img width="2382" height="1308" alt="image" src="https://github.com/user-attachments/assets/f1612ab5-7333-4e3b-9633-107d8128f283" />
 
 ### 🖥️ 浏览器渲染扫描 (v5.0+)
 - **三种扫描模式**: static（静态）、render（渲染）、hybrid（混合）
