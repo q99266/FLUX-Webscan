@@ -56,15 +56,15 @@ FLUX v5.4 是一款专业的 Web 安全扫描工具。
 ```
 解压 FLUX_v5.4_Release.zip 后：
 
-方式一：双击运行
-  直接双击 START.bat
-
-方式二：命令行运行
+方式一：命令行运行
   cd FLUX_v5.4打包
   flux.exe -t https://example.com
 
-方式三：PowerShell运行
+
+方式二：PowerShell运行
   .\START.ps1 -t https://example.com
+
+
 ```
 
 ---
