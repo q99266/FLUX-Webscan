@@ -1,10 +1,10 @@
-FLUX v5.4.2是一款专业的Web安全扫描工具，支持CLI和Web界面双模式运行。新增WAF指纹识别与智能Bypass引擎、700+通用Bypass Payload池、并发扫描优化、二进制文件过滤、Web界面图形化操作等功能，支持静态/渲染/混合三种扫描策略，集成Playwright实现SPA/前端路由页面扫描。
+FLUX v5.4.5是一款专业的Web安全扫描工具，支持CLI和Web界面双模式运行。新增WAF指纹识别与智能Bypass引擎、700+通用Bypass Payload池、并发扫描优化、二进制文件过滤、Web界面图形化操作等功能，支持静态/渲染/混合三种扫描策略，集成Playwright实现SPA/前端路由页面扫描。本次更新重点修复云密钥检测误报问题，大幅降低字节跳动等云服务密钥的假阳性。
 
 **作者:** ROOT4044
-**版本:** v5.4.2
-**更新日期:** 2026-04-11
+**版本:** v5.4.5
+**更新日期:** 2026-04-21
 
-# FLUX v5.4.2 使用手册
+# FLUX v5.4.5 使用手册
 
 ## 目录
 - [简介](#简介)
@@ -25,7 +25,7 @@ FLUX v5.4.2是一款专业的Web安全扫描工具，支持CLI和Web界面双模
 
 ## 简介
 
-FLUX v5.4.2是一款专业的Web安全扫描工具，支持CLI命令行和Web界面双模式运行。本次更新重点增强了扫描稳定性和性能优化，包括并发扫描、二进制文件过滤、Web界面等功能，同时保持了WAF识别与绕过能力和漏洞检测引擎的完整性。
+FLUX v5.4.5是一款专业的Web安全扫描工具，支持CLI命令行和Web界面双模式运行。本次更新重点修复云密钥检测误报问题，包括字节跳动API Key、阿里云/腾讯云SecretKey、百度云AK、地图API密钥等通用字符模式的高假阳性问题。
 
 
 **核心特性:**
@@ -211,14 +211,8 @@ FLUX提供完整的Web界面，支持图形化操作和实时扫描监控。
 ### 启动方式
 
 ```bash
-# 方式1: 双击运行
+# 方式1: 直接双击运行 (推荐)
 flux_web.exe
-
-# 方式2: 命令行启动
-python flux_web.py
-
-# 方式3: 指定端口
-# 修改 flux_web.py 中的 port 参数
 ```
 
 ### Web界面功能
@@ -234,23 +228,9 @@ python flux_web.py
 
 ### 界面预览
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│  🔒 FLUX Security Scanner                    [设置] [历史]│
-├─────────────────────────────────────────────────────────────┤
-│  目标URL: [https://example.com                    ] [扫描] │
-│  深度: [3▼] 并发: [20▼] 模式: [hybrid▼]                   │
-├─────────────────────────────────────────────────────────────┤
-│  📜 实时日志                                              │
-│  ─────────────────────────────────────────────────────────│
-│  [08:13:26] [*] 开始扫描...                               │
-│  [08:13:27] [+] 发现 237 个页面链接                       │
-│  [08:13:28] [+] 发现 9 个JS文件                          │
-│  ...                                                       │
-├─────────────────────────────────────────────────────────────┤
-│  📊 扫描进度: ████████████░░░░ 67%  (用时 00:02:34)        │
-└─────────────────────────────────────────────────────────────┘
-```
+<img width="2538" height="1299" alt="image" src="https://github.com/user-attachments/assets/c8e84b19-26d0-4cf4-b915-ef80fed40713" />
+
+<img width="2544" height="1299" alt="image" src="https://github.com/user-attachments/assets/0c6155cd-da2e-4be2-bf1c-897abacfe052" />
 
 ## 快速开始
 
@@ -469,10 +449,9 @@ flux.exe -t https://example.com --full --dnslog xxx.dnslog.cn -o report.html
 
 ```
 FLUX/
-├── flux.py                 # 主程序入口(CLI)
-├── flux_web.py             # Web界面入口(Flask)
+├── flux.exe                # 主程序入口(CLI)
+├── flux_web.exe            # Web界面入口(Flask)
 ├── flux.ico               # 程序图标
-├── start_flux_web.bat      # Web界面启动脚本
 ├── requirements.txt        # Python依赖
 ├── core/                   # 核心模块
 │   ├── models.py           # 数据模型
@@ -532,6 +511,36 @@ FLUX/
 - 提高密钥识别准确性
 
 ## 更新日志
+
+**v5.4.5 (2026-04-21) 指纹优化与域名筛选增强版本:**
+- 🔍 **指纹识别结果优化**: 限制为Top 10（按置信度排序），避免输出过多无关指纹，提高结果可读性
+- ⚖️ **冲突仲裁机制**: 同类产品只保留最高置信度，避免同一个组件多个版本同时显示
+- 🌐 **HTML报告域名筛选功能增强**: 
+  - 支持按域名筛选敏感信息、API端点、漏洞、JS文件、页面等数据
+  - 域名筛选栏显示当前域名统计（敏感信息/API/漏洞/JS/页面数量）
+  - 支持显示全部域名汇总统计
+  - 筛选功能覆盖所有数据表格（findingsTable/endpointsTable/vulnsTable/jsFilesTable等）
+- 🎯 **Bypass Payload可自定义采样数量**: 通过`--bypass-limit`参数控制bypass payload采样数量（默认30个，范围10-100）
+- 💾 **Payload加载器模块**: 从YAML配置文件加载漏洞测试payload，支持用户自定义payload
+- 🔧 **漏洞表格域名筛选完善**: vulnsTable已添加到域名筛选函数，实现漏洞数据按域名筛选
+
+<img width="1235" height="621" alt="ede345f4b5534bb5b1602d5b9adf995c" src="https://github.com/user-attachments/assets/9e677e7a-418b-4515-906a-12ee8d5983bb" />
+
+<img width="2462" height="330" alt="055633aeb4994a87bfcdfe6fa76a487d" src="https://github.com/user-attachments/assets/f8529100-954b-40a1-a855-2dbccfa6aa90" />
+
+**v5.4.4 (2026-04-18) 云密钥误报修复版本:**
+- 🔧 **字节跳动API Key检测加强**: 熵值阈值从3.5提高到4.5，增加字符种类验证(必须同时包含大小写字母和数字)
+- 🛡️ **云密钥局部上下文验证加强**: 关键词距离要求从200字符收紧到100字符，至少2个关键词必须在附近
+- 📊 **地图API密钥熵值提高**: 从3.2提高到3.8，减少随机字符串误报
+- 🎯 **通用字符模式密钥过滤增强**: 阿里云/腾讯云/百度云/AWS等SecretKey增加熵值验证(3.5)和上下文距离检查
+- ✅ **_analyze_local_context函数重构**: 增加key_type参数传递，对不同类型密钥应用差异化熵值标准
+
+**v5.4.3 (2026-04-18) 误报优化版本:**
+- 🔧 **RCE请求/响应对应修复**: 修复单次命中时请求与响应对不上的问题，重新发送请求获取真实对应的请求/响应对
+- 🎯 **XSS检测上下文验证加强**: 只有在`<script>`标签内、事件处理器内或危险标签属性内才报告Confirmed，HTML转义反射不报告
+- 🛡️ **SQLI关键字收紧**: 移除宽泛关键字(warning/exception/notice/undefined/mysql/syntax error)，保留精准SQL错误特征
+- 📊 **SQLI状态码/长度差分验证**: 必须满足状态码变化或长度显著变化(>100字节)或新错误关键字>=2，大幅降低误报
+- 🌐 **漏洞表格域名筛选修复**: 将vulnsTable添加到域名筛选函数，实现漏洞数据按域名筛选
 
 **v5.4.2 新增特性:**
 - 🌐 **Web界面模式**: 完整的图形化界面，支持扫描管理、实时监控、报告管理、参数设置
@@ -822,13 +831,3 @@ MIT License
 - Packer-Fuzzer
 - EHole
 - Veo
-
-## Star History
-
-<a href="https://www.star-history.com/?repos=MY0723%2FFLUX-Webscan&type=date&legend=top-left">
- <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=MY0723/FLUX-Webscan&type=date&theme=dark&legend=top-left" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=MY0723/FLUX-Webscan&type=date&legend=top-left" />
-   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=MY0723/FLUX-Webscan&type=date&legend=top-left" />
- </picture>
-</a>
